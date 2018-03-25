@@ -69,8 +69,7 @@ for (JsonElement result : results) {
 ```
 #### 8.  Get specific post and print moderator of this post
 ``` Java
-JsonObject postJson = 
-                     service.post("kabooom", "building-and-using-multiple-android-shared-libraries").get();
+JsonObject postJson = service.post("kabooom", "building-and-using-multiple-android-shared-libraries").get();
 System.out.println(postJson.get("moderator").getAsString());
 ```
 #### 9.  Get total posts count
@@ -93,8 +92,7 @@ for (JsonElement result : results) {
 ```
 #### 12.  Get posts done on github repo "java-native-access/jna"
 ``` Java
-JsonObject postsJson = 
-                           service.postsByGithubProject("java-native-access/jna", new HashMap<>()).get();
+JsonObject postsJson = service.postsByGithubProject("java-native-access/jna", new HashMap<>()).get();
 JsonArray results = postsJson.get("results").getAsJsonArray();
 for (JsonElement result : results) {
     System.out.println(result.getAsJsonObject().get("title").getAsString());
