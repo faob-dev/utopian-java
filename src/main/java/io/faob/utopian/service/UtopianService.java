@@ -57,7 +57,7 @@ public interface UtopianService {
     HttpManager<JsonObject> stats() throws Exception;
 
     /**
-     * Returns moderator as {@link JsonObject} with given username.
+     * Returns moderator as {@link JsonObject} with given username otherwise empty {@link JsonObject}.
      * <p>
      * Note: After this method call you need to call {@code get()} to make http call and get response.
      * </p>
@@ -70,7 +70,7 @@ public interface UtopianService {
 
 
     /**
-     * Returns sponsor as {@link JsonObject} with given username.
+     * Returns sponsor as {@link JsonObject} with given username otherwise empty {@link JsonObject}.
      * <p>
      * Note: After this method call you need to call {@code get()} to make http call and get response.
      * </p>
@@ -83,7 +83,7 @@ public interface UtopianService {
 
 
     /**
-     * Returns posts as {@link JsonObject} with given options.
+     * Returns posts as {@link JsonObject} with given filter options.
      * <p>
      * Note: After this method call you need to call {@code get()} to make http call and get response.
      * </p>
@@ -96,7 +96,7 @@ public interface UtopianService {
 
 
     /**
-     * Returns top projects as {@link JsonArray} with given options.
+     * Returns top projects as {@link JsonArray} with given filter options.
      * <p>
      * Note: After this method call you need to call {@code get()} to make http call and get response.
      * </p>
@@ -117,7 +117,7 @@ public interface UtopianService {
      * @return A reference to {@code HttpManager} object to make http call.
      * @throws Exception If a problem occurs during building and parsing of json response.
      */
-    HttpManager<Integer> totalPostCount() throws Exception;
+    HttpManager<Integer> totalPostsCount() throws Exception;
 
 
     /**
@@ -148,7 +148,7 @@ public interface UtopianService {
 
 
     /**
-     * Returns list of posts as {@link JsonObject} with given author.
+     * Returns list of posts as {@link JsonObject} with given author and filter options.
      * <p>
      * Note: After this method call you need to call {@code get()} to make http call and get response.
      * </p>
@@ -162,7 +162,7 @@ public interface UtopianService {
 
 
     /**
-     * Returns list of posts as {@link JsonObject} links with specified github repository.
+     * Returns list of posts as {@link JsonObject} links with specified github repository and filter options.
      * <p>
      * Note: After this method call you need to call {@code get()} to make http call and get response.
      * </p>

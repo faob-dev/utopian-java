@@ -102,7 +102,7 @@ public class DefaultUtopianService implements UtopianService {
     }
 
     @Override
-    public HttpManager<Integer> totalPostCount() throws Exception {
+    public HttpManager<Integer> totalPostsCount() throws Exception {
         String url = ENDPOINT_POSTS + "/?limit=1&skip=0";
         TypeMapper<Integer> asInt = jsonString -> {
             JsonObject jsonObject = new JsonParser().parse(jsonString).getAsJsonObject();
