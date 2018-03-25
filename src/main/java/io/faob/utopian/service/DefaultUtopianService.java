@@ -14,25 +14,25 @@ import java.util.Map;
 public class DefaultUtopianService implements UtopianService {
 
     @Override
-    public HttpManager<JsonObject> moderators() throws Exception {
+    public HttpManager<JsonObject> moderators() {
         TypeMapper<JsonObject> asJsonObject = jsonString -> new JsonParser().parse(jsonString).getAsJsonObject();
         return new HttpManagerImpl<>(ENDPOINT_MODERATORS, asJsonObject);
     }
 
     @Override
-    public HttpManager<JsonObject> sponsors() throws Exception {
+    public HttpManager<JsonObject> sponsors() {
         TypeMapper<JsonObject> asJsonObject = jsonString -> new JsonParser().parse(jsonString).getAsJsonObject();
         return new HttpManagerImpl<>(ENDPOINT_SPONSORS, asJsonObject);
     }
 
     @Override
-    public HttpManager<JsonObject> stats() throws Exception {
+    public HttpManager<JsonObject> stats() {
         TypeMapper<JsonObject> asJsonObject = jsonString -> new JsonParser().parse(jsonString).getAsJsonObject();
         return new HttpManagerImpl<>(ENDPOINT_STATS, asJsonObject);
     }
 
     @Override
-    public HttpManager<JsonObject> moderator(String userName) throws Exception {
+    public HttpManager<JsonObject> moderator(String userName) {
         TypeMapper<JsonObject> asJsonObject = jsonString -> {
             JsonObject moderators = new JsonParser().parse(jsonString).getAsJsonObject();
             JsonArray results = moderators.getAsJsonArray("results");
@@ -52,7 +52,7 @@ public class DefaultUtopianService implements UtopianService {
     }
 
     @Override
-    public HttpManager<JsonObject> sponsor(String userName) throws Exception {
+    public HttpManager<JsonObject> sponsor(String userName) {
         TypeMapper<JsonObject> asJsonObject = jsonString -> {
             JsonObject sponsors = new JsonParser().parse(jsonString).getAsJsonObject();
             JsonArray results = sponsors.getAsJsonArray("results");
@@ -69,7 +69,7 @@ public class DefaultUtopianService implements UtopianService {
     }
 
     @Override
-    public HttpManager<JsonObject> posts(Map<String, Object> options) throws Exception {
+    public HttpManager<JsonObject> posts(Map<String, Object> options) {
         if (options == null)
             options = new HashMap<>();
 
@@ -90,7 +90,7 @@ public class DefaultUtopianService implements UtopianService {
     }
 
     @Override
-    public HttpManager<JsonArray> topProjects(Map<String, Object> options) throws Exception {
+    public HttpManager<JsonArray> topProjects(Map<String, Object> options) {
         StringBuilder url = new StringBuilder(ENDPOINT_POSTS_TOP + "/?");
         for (Map.Entry<String, Object> entry : options.entrySet()) {
             url.append(entry.getKey()).append("=").append(entry.getValue()).append("&");
@@ -102,7 +102,7 @@ public class DefaultUtopianService implements UtopianService {
     }
 
     @Override
-    public HttpManager<Integer> totalPostsCount() throws Exception {
+    public HttpManager<Integer> totalPostsCount() {
         String url = ENDPOINT_POSTS + "/?limit=1&skip=0";
         TypeMapper<Integer> asInt = jsonString -> {
             JsonObject jsonObject = new JsonParser().parse(jsonString).getAsJsonObject();
@@ -112,14 +112,14 @@ public class DefaultUtopianService implements UtopianService {
     }
 
     @Override
-    public HttpManager<JsonObject> post(String userName, String permLink) throws Exception {
+    public HttpManager<JsonObject> post(String userName, String permLink) {
         String url = ENDPOINT_POSTS + "/" + userName + "/" + permLink;
         TypeMapper<JsonObject> asJsonObject = jsonString -> new JsonParser().parse(jsonString).getAsJsonObject();
         return new HttpManagerImpl<>(url, asJsonObject);
     }
 
     @Override
-    public HttpManager<String> postURL(String postId) throws Exception {
+    public HttpManager<String> postURL(String postId) {
         String url = ENDPOINT_POSTS + "/byid/" + postId;
         TypeMapper<String> asString = jsonString -> {
             JsonObject jsonObject = new JsonParser().parse(jsonString).getAsJsonObject();
@@ -129,7 +129,7 @@ public class DefaultUtopianService implements UtopianService {
     }
 
     @Override
-    public HttpManager<JsonObject> postByAuthor(String userName, Map<String, Object> options) throws Exception {
+    public HttpManager<JsonObject> postByAuthor(String userName, Map<String, Object> options) {
         if (options == null)
             options = new HashMap<>();
 
@@ -153,8 +153,13 @@ public class DefaultUtopianService implements UtopianService {
     }
 
     @Override
-    public HttpManager<JsonObject> postsByGithubProject(String repoName, Map<String, Object> options) throws Exception {
-        String repoId = githubRepoIdByRepoName(repoName).get();
+    public HttpManager<JsonObject> postsByGithubProject(String repoName, Map<String, Object> options) {
+        String repoId = null;
+        try {
+            repoId = githubRepoIdByRepoName(repoName).get();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         if (options == null)
             options = new HashMap<>();
@@ -177,7 +182,7 @@ public class DefaultUtopianService implements UtopianService {
         return posts(options);
     }
 
-    private HttpManager<String> githubRepoIdByRepoName(String repoName) throws Exception {
+    private HttpManager<String> githubRepoIdByRepoName(String repoName) {
         String url = GITHUB_REPO_URL + repoName;
         TypeMapper<String> asString = jsonString -> {
             JsonObject jsonObject = new JsonParser().parse(jsonString).getAsJsonObject();

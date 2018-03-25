@@ -9,6 +9,7 @@ import java.util.Map;
 
 /**
  * Service shows various options available to interacts with Utopian service
+ *
  * @author FaoB
  */
 
@@ -29,9 +30,8 @@ public interface UtopianService {
      * </p>
      *
      * @return A reference to {@code HttpManager} object to make http call.
-     * @throws Exception If a problem occurs during building and parsing of json response.
      */
-    HttpManager<JsonObject> moderators() throws Exception;
+    HttpManager<JsonObject> moderators();
 
 
     /**
@@ -41,9 +41,8 @@ public interface UtopianService {
      * </p>
      *
      * @return A reference to {@code HttpManager} object to make http call.
-     * @throws Exception If a problem occurs during building and parsing of json response.
      */
-    HttpManager<JsonObject> sponsors() throws Exception;
+    HttpManager<JsonObject> sponsors();
 
     /**
      * Returns all stats as {@link JsonObject}.
@@ -52,9 +51,8 @@ public interface UtopianService {
      * </p>
      *
      * @return A reference to {@code HttpManager} object to make http call.
-     * @throws Exception If a problem occurs during building and parsing of json response.
      */
-    HttpManager<JsonObject> stats() throws Exception;
+    HttpManager<JsonObject> stats();
 
     /**
      * Returns moderator as {@link JsonObject} with given username otherwise empty {@link JsonObject}.
@@ -64,9 +62,8 @@ public interface UtopianService {
      *
      * @param userName Moderator username
      * @return A reference to {@code HttpManager} object to make http call.
-     * @throws Exception If a problem occurs during building and parsing of json response.
      */
-    HttpManager<JsonObject> moderator(String userName) throws Exception;
+    HttpManager<JsonObject> moderator(String userName);
 
 
     /**
@@ -77,9 +74,8 @@ public interface UtopianService {
      *
      * @param userName Sponsor username
      * @return A reference to {@code HttpManager} object to make http call.
-     * @throws Exception If a problem occurs during building and parsing of json response.
      */
-    HttpManager<JsonObject> sponsor(String userName) throws Exception;
+    HttpManager<JsonObject> sponsor(String userName);
 
 
     /**
@@ -90,9 +86,8 @@ public interface UtopianService {
      *
      * @param options Additional query options to customize results
      * @return A reference to {@code HttpManager} object to make http call.
-     * @throws Exception If a problem occurs during building and parsing of json response.
      */
-    HttpManager<JsonObject> posts(Map<String, Object> options) throws Exception;
+    HttpManager<JsonObject> posts(Map<String, Object> options);
 
 
     /**
@@ -103,9 +98,8 @@ public interface UtopianService {
      *
      * @param options Additional query options to customize results
      * @return A reference to {@code HttpManager} object to make http call.
-     * @throws Exception If a problem occurs during building and parsing of json response.
      */
-    HttpManager<JsonArray> topProjects(Map<String, Object> options) throws Exception;
+    HttpManager<JsonArray> topProjects(Map<String, Object> options);
 
 
     /**
@@ -115,9 +109,8 @@ public interface UtopianService {
      * </p>
      *
      * @return A reference to {@code HttpManager} object to make http call.
-     * @throws Exception If a problem occurs during building and parsing of json response.
      */
-    HttpManager<Integer> totalPostsCount() throws Exception;
+    HttpManager<Integer> totalPostsCount();
 
 
     /**
@@ -129,9 +122,8 @@ public interface UtopianService {
      * @param userName Author name
      * @param permLink Post permlink
      * @return A reference to {@code HttpManager} object to make http call.
-     * @throws Exception If a problem occurs during building and parsing of json response.
      */
-    HttpManager<JsonObject> post(String userName, String permLink) throws Exception;
+    HttpManager<JsonObject> post(String userName, String permLink);
 
 
     /**
@@ -142,9 +134,8 @@ public interface UtopianService {
      *
      * @param postId Id of post
      * @return A reference to {@code HttpManager} object to make http call.
-     * @throws Exception If a problem occurs during building and parsing of json response.
      */
-    HttpManager<String> postURL(String postId) throws Exception;
+    HttpManager<String> postURL(String postId);
 
 
     /**
@@ -156,9 +147,8 @@ public interface UtopianService {
      * @param userName Author username
      * @param options  Additional query options to customize results
      * @return A reference to {@code HttpManager} object to make http call.
-     * @throws Exception If a problem occurs during building and parsing of json response.
      */
-    HttpManager<JsonObject> postByAuthor(String userName, Map<String, Object> options) throws Exception;
+    HttpManager<JsonObject> postByAuthor(String userName, Map<String, Object> options);
 
 
     /**
@@ -170,8 +160,7 @@ public interface UtopianService {
      * @param repoName Full github repository name i.e. square/okhttp
      * @param options  Additional query options to customize results
      * @return A reference to {@code HttpManager} object to make http call.
-     * @throws Exception If a problem occurs during building and parsing of json response.
      */
-    HttpManager<JsonObject> postsByGithubProject(String repoName, Map<String, Object> options) throws Exception;
+    HttpManager<JsonObject> postsByGithubProject(String repoName, Map<String, Object> options);
 
 }
