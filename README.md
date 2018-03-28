@@ -36,7 +36,7 @@ System.out.println(stats);
 ```
 #### 4.  Get specific moderator and access its properties
 ``` Java
-JsonObject moderatorJson = service.moderator("ruah").get();
+JsonObject moderatorJson = service.moderator("espoem").get();
 if(moderatorJson.size() != 0)
     System.out.println(moderatorJson.get("account").getAsString());
 ```
