@@ -1,6 +1,6 @@
 # utopian.java #
 
-Utopian API for Java and Android
+Utopian API for Desktop Java and Android
 
 # Synchronous API examples #
 
