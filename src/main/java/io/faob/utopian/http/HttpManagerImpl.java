@@ -1,7 +1,7 @@
 package io.faob.utopian.http;
 
-import io.faob.utopian.handlers.ErrorHandler;
-import io.faob.utopian.handlers.ResponseHandler;
+import io.faob.utopian.http.handlers.ErrorHandler;
+import io.faob.utopian.http.handlers.ResponseHandler;
 import io.faob.utopian.type.TypeMapper;
 import okhttp3.*;
 

@@ -1,4 +1,4 @@
-package io.faob.utopian.handlers;
+package io.faob.utopian.http.handlers;
 
 /**
  * Functional interface used as lambda expression to handle successful response.
