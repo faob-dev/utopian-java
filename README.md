@@ -2,6 +2,34 @@
 
 Utopian API for Desktop Java and Android
 
+# Download #
+Maven:
+```xml
+<repositories>
+    <repository>
+        <id>jcenter</id>
+        <url>https://jcenter.bintray.com/</url>
+    </repository>
+</repositories>
+
+<dependencies>
+    <dependency>
+        <groupId>io.faob</groupId>
+        <artifactId>utopian-java</artifactId>
+        <version>0.1.0</version>
+    </dependency>
+</dependencies>
+```
+Gradle:
+```gradle
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'io.faob:utopian-java:0.1.0'
+}
+```
 # Synchronous API examples #
 
 ####  Creating utopian service java object
