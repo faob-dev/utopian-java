@@ -31,7 +31,7 @@ public interface UtopianService {
      *
      * @return A reference to {@code HttpManager} object to make http call.
      */
-    HttpManager<JsonObject> moderators();
+    HttpManager<JsonArray> moderators();
 
 
     /**
@@ -42,7 +42,7 @@ public interface UtopianService {
      *
      * @return A reference to {@code HttpManager} object to make http call.
      */
-    HttpManager<JsonObject> sponsors();
+    HttpManager<JsonArray> sponsors();
 
     /**
      * Returns all stats as {@link JsonObject}.
@@ -87,7 +87,7 @@ public interface UtopianService {
      * @param options Additional query options to customize results
      * @return A reference to {@code HttpManager} object to make http call.
      */
-    HttpManager<JsonObject> posts(Map<String, Object> options);
+    HttpManager<JsonArray> posts(Map<String, Object> options);
 
 
     /**
@@ -148,7 +148,7 @@ public interface UtopianService {
      * @param options  Additional query options to customize results
      * @return A reference to {@code HttpManager} object to make http call.
      */
-    HttpManager<JsonObject> postByAuthor(String userName, Map<String, Object> options);
+    HttpManager<JsonArray> postsByAuthor(String userName, Map<String, Object> options);
 
 
     /**
@@ -161,6 +161,6 @@ public interface UtopianService {
      * @param options  Additional query options to customize results
      * @return A reference to {@code HttpManager} object to make http call.
      */
-    HttpManager<JsonObject> postsByGithubProject(String repoName, Map<String, Object> options);
+    HttpManager<JsonArray> postsByGithubProject(String repoName, Map<String, Object> options);
 
 }

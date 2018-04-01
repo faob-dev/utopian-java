@@ -14,20 +14,29 @@ import java.util.Map;
 public class DefaultUtopianService implements UtopianService {
 
     @Override
-    public HttpManager<JsonObject> moderators() {
-        TypeMapper<JsonObject> asJsonObject = jsonString -> new JsonParser().parse(jsonString).getAsJsonObject();
-        return new HttpManagerImpl<>(ENDPOINT_MODERATORS, asJsonObject);
+    public HttpManager<JsonArray> moderators() {
+        TypeMapper<JsonArray> asJsonArray = jsonString -> {
+            JsonObject moderatorsJson = new JsonParser().parse(jsonString).getAsJsonObject();
+            return moderatorsJson.get("results").getAsJsonArray();
+        };
+        return new HttpManagerImpl<>(ENDPOINT_MODERATORS, asJsonArray);
     }
 
     @Override
-    public HttpManager<JsonObject> sponsors() {
-        TypeMapper<JsonObject> asJsonObject = jsonString -> new JsonParser().parse(jsonString).getAsJsonObject();
-        return new HttpManagerImpl<>(ENDPOINT_SPONSORS, asJsonObject);
+    public HttpManager<JsonArray> sponsors() {
+        TypeMapper<JsonArray> asJsonArray = jsonString -> {
+            JsonObject sponsorsJson = new JsonParser().parse(jsonString).getAsJsonObject();
+            return sponsorsJson.get("results").getAsJsonArray();
+        };
+        return new HttpManagerImpl<>(ENDPOINT_SPONSORS, asJsonArray);
     }
 
     @Override
     public HttpManager<JsonObject> stats() {
-        TypeMapper<JsonObject> asJsonObject = jsonString -> new JsonParser().parse(jsonString).getAsJsonObject();
+        TypeMapper<JsonObject> asJsonObject = jsonString -> {
+            JsonObject statsJson = new JsonParser().parse(jsonString).getAsJsonObject();
+            return statsJson.get("stats").getAsJsonObject();
+        };
         return new HttpManagerImpl<>(ENDPOINT_STATS, asJsonObject);
     }
 
@@ -69,7 +78,7 @@ public class DefaultUtopianService implements UtopianService {
     }
 
     @Override
-    public HttpManager<JsonObject> posts(Map<String, Object> options) {
+    public HttpManager<JsonArray> posts(Map<String, Object> options) {
         if (options == null)
             options = new HashMap<>();
 
@@ -85,12 +94,18 @@ public class DefaultUtopianService implements UtopianService {
         }
         url = new StringBuilder(url.substring(0, url.length() - 1));
 
-        TypeMapper<JsonObject> asJsonObject = jsonString -> new JsonParser().parse(jsonString).getAsJsonObject();
-        return new HttpManagerImpl<>(url.toString(), asJsonObject);
+        TypeMapper<JsonArray> asJsonArray = jsonString -> {
+            JsonObject postsJson = new JsonParser().parse(jsonString).getAsJsonObject();
+            return postsJson.get("results").getAsJsonArray();
+        };
+        return new HttpManagerImpl<>(url.toString(), asJsonArray);
     }
 
     @Override
     public HttpManager<JsonArray> topProjects(Map<String, Object> options) {
+        if (options == null)
+            options = new HashMap<>();
+
         StringBuilder url = new StringBuilder(ENDPOINT_POSTS_TOP + "/?");
         for (Map.Entry<String, Object> entry : options.entrySet()) {
             url.append(entry.getKey()).append("=").append(entry.getValue()).append("&");
@@ -129,7 +144,7 @@ public class DefaultUtopianService implements UtopianService {
     }
 
     @Override
-    public HttpManager<JsonObject> postByAuthor(String userName, Map<String, Object> options) {
+    public HttpManager<JsonArray> postsByAuthor(String userName, Map<String, Object> options) {
         if (options == null)
             options = new HashMap<>();
 
@@ -148,12 +163,15 @@ public class DefaultUtopianService implements UtopianService {
         }
         url = new StringBuilder(url.substring(0, url.length() - 1));
 
-        TypeMapper<JsonObject> asJsonObject = jsonString -> new JsonParser().parse(jsonString).getAsJsonObject();
-        return new HttpManagerImpl<>(url.toString(), asJsonObject);
+        TypeMapper<JsonArray> asJsonArray = jsonString -> {
+            JsonObject postsJson = new JsonParser().parse(jsonString).getAsJsonObject();
+            return postsJson.get("results").getAsJsonArray();
+        };
+        return new HttpManagerImpl<>(url.toString(), asJsonArray);
     }
 
     @Override
-    public HttpManager<JsonObject> postsByGithubProject(String repoName, Map<String, Object> options) {
+    public HttpManager<JsonArray> postsByGithubProject(String repoName, Map<String, Object> options) {
         String repoId = null;
         try {
             repoId = githubRepoIdByRepoName(repoName).get();
