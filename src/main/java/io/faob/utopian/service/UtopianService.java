@@ -3,6 +3,7 @@ package io.faob.utopian.service;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import io.faob.utopian.http.HttpManager;
+import io.faob.utopian.model.*;
 import io.faob.utopian.type.ArrayType;
 import io.faob.utopian.type.ObjectType;
 
@@ -30,7 +31,7 @@ public interface UtopianService {
      *
      * @return A reference to {@code ArrayType} object to select custom array return type.
      */
-    ArrayType<JsonArray> moderators();
+    ArrayType<Moderator> moderators();
 
 
     /**
@@ -38,14 +39,14 @@ public interface UtopianService {
      *
      * @return A reference to {@code ArrayType} object to select custom array return type.
      */
-    ArrayType<JsonArray> sponsors();
+    ArrayType<Sponsor> sponsors();
 
     /**
      * Returns all stats as {@link JsonObject}.
      *
      * @return A reference to {@code ObjectType} object to select custom object return type.
      */
-    ObjectType<JsonObject> stats();
+    ObjectType<Stats> stats();
 
     /**
      * Returns moderator as {@link JsonObject} with given username otherwise empty {@link JsonObject}.
@@ -53,7 +54,7 @@ public interface UtopianService {
      * @param userName Moderator username
      * @return A reference to {@code ObjectType} object to select custom object return type.
      */
-    ObjectType<JsonObject> moderator(String userName);
+    ObjectType<Moderator> moderator(String userName);
 
 
     /**
@@ -62,7 +63,7 @@ public interface UtopianService {
      * @param userName Sponsor username
      * @return A reference to {@code ObjectType} object to select custom object return type.
      */
-    ObjectType<JsonObject> sponsor(String userName);
+    ObjectType<Sponsor> sponsor(String userName);
 
 
     /**
@@ -71,7 +72,7 @@ public interface UtopianService {
      * @param options Additional query options to customize results
      * @return A reference to {@code ArrayType} object to select custom array return type.
      */
-    ArrayType<JsonArray> posts(Map<String, Object> options);
+    ArrayType<Post> posts(Map<String, Object> options);
 
 
     /**
@@ -80,7 +81,7 @@ public interface UtopianService {
      * @param options Additional query options to customize results
      * @return A reference to {@code ArrayType} object to select custom array return type.
      */
-    ArrayType<JsonArray> topProjects(Map<String, Object> options);
+    ArrayType<Project> topProjects(Map<String, Object> options);
 
 
     /**
@@ -98,7 +99,7 @@ public interface UtopianService {
      * @param permLink Post permlink
      * @return A reference to {@code ObjectType} object to select custom object return type.
      */
-    ObjectType<JsonObject> post(String userName, String permLink);
+    ObjectType<Post> post(String userName, String permLink);
 
 
     /**
@@ -117,7 +118,7 @@ public interface UtopianService {
      * @param options  Additional query options to customize results
      * @return A reference to {@code ArrayType} object to select custom array return type.
      */
-    ArrayType<JsonArray> postsByAuthor(String userName, Map<String, Object> options);
+    ArrayType<Post> postsByAuthor(String userName, Map<String, Object> options);
 
 
     /**
@@ -127,6 +128,6 @@ public interface UtopianService {
      * @param options  Additional query options to customize results
      * @return A reference to {@code ArrayType} object to select custom array return type.
      */
-    ArrayType<JsonArray> postsByGithubProject(String repoName, Map<String, Object> options);
+    ArrayType<Post> postsByGithubProject(String repoName, Map<String, Object> options);
 
 }

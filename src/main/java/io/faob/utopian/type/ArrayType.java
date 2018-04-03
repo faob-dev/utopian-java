@@ -12,11 +12,13 @@ import java.util.List;
  * @author FaoB
  */
 public class ArrayType<T> extends Type {
-    private TypeMapper<T> asJsonArray;
+    private TypeMapper<JsonArray> asJsonArray;
+    private TypeMapper<List<T>> asList;
 
-    public ArrayType(String url, TypeMapper<T> asJsonArray) {
+    public ArrayType(String url, TypeMapper<JsonArray> asJsonArray, TypeMapper<List<T>> asList) {
         super(url);
         this.asJsonArray = asJsonArray;
+        this.asList = asList;
     }
 
     /**
@@ -28,9 +30,22 @@ public class ArrayType<T> extends Type {
      *
      * @return A reference to {@code HttpManager} object to make http call.
      */
-
-    public HttpManager<T> asJsonArray() {
+    public HttpManager<JsonArray> asJsonArray() {
         return new HttpManagerImpl<>(url, asJsonArray);
     }
 
+
+    /**
+     * Call to this method will map string response to java type and
+     * return response as {@code List} of that type.
+     * <p>
+     * Note: After this method call you need to call {@code get()} or {@code getAsync()}
+     * to make http call and get response.
+     * </p>
+     *
+     * @return A reference to {@code HttpManager} object to make http call.
+     */
+    public HttpManager<List<T>> asJavaListType() {
+        return new HttpManagerImpl<>(url, asList);
+    }
 }

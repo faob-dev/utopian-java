@@ -1,49 +1,65 @@
 package io.faob.utopian.service;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 import io.faob.utopian.http.HttpManager;
 import io.faob.utopian.http.HttpManagerImpl;
+import io.faob.utopian.model.*;
 import io.faob.utopian.type.ArrayType;
 import io.faob.utopian.type.ObjectType;
 import io.faob.utopian.type.TypeMapper;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DefaultUtopianService implements UtopianService {
 
     @Override
-    public ArrayType<JsonArray> moderators() {
+    public ArrayType<Moderator> moderators() {
         TypeMapper<JsonArray> asJsonArray = jsonString -> {
             JsonObject moderatorsJson = new JsonParser().parse(jsonString).getAsJsonObject();
             return moderatorsJson.get("results").getAsJsonArray();
         };
-        return new ArrayType<>(ENDPOINT_MODERATORS, asJsonArray);
+
+        TypeMapper<List<Moderator>> asList = jsonString -> {
+            Type collectionType = new TypeToken<List<Moderator>>(){}.getType();
+            return new Gson().fromJson(asJsonArray.map(jsonString), collectionType);
+        };
+
+        return new ArrayType<>(ENDPOINT_MODERATORS, asJsonArray, asList);
     }
 
     @Override
-    public ArrayType<JsonArray> sponsors() {
+    public ArrayType<Sponsor> sponsors() {
         TypeMapper<JsonArray> asJsonArray = jsonString -> {
             JsonObject sponsorsJson = new JsonParser().parse(jsonString).getAsJsonObject();
             return sponsorsJson.get("results").getAsJsonArray();
         };
-        return new ArrayType<>(ENDPOINT_SPONSORS, asJsonArray);
+
+        TypeMapper<List<Sponsor>> asList = jsonString -> {
+            Type collectionType = new TypeToken<List<Sponsor>>(){}.getType();
+            return new Gson().fromJson(asJsonArray.map(jsonString), collectionType);
+        };
+
+        return new ArrayType<>(ENDPOINT_SPONSORS, asJsonArray, asList);
     }
 
     @Override
-    public ObjectType<JsonObject> stats() {
+    public ObjectType<Stats> stats() {
         TypeMapper<JsonObject> asJsonObject = jsonString -> {
             JsonObject statsJson = new JsonParser().parse(jsonString).getAsJsonObject();
             return statsJson.get("stats").getAsJsonObject();
         };
-        return new ObjectType<>(ENDPOINT_STATS, asJsonObject);
+
+        TypeMapper<Stats> asObject = jsonString -> new Gson().fromJson(asJsonObject.map(jsonString), Stats.class);
+
+        return new ObjectType<>(ENDPOINT_STATS, asJsonObject, asObject);
     }
 
     @Override
-    public ObjectType<JsonObject> moderator(String userName) {
+    public ObjectType<Moderator> moderator(String userName) {
         TypeMapper<JsonObject> asJsonObject = jsonString -> {
             JsonObject moderators = new JsonParser().parse(jsonString).getAsJsonObject();
             JsonArray results = moderators.getAsJsonArray("results");
@@ -59,11 +75,14 @@ public class DefaultUtopianService implements UtopianService {
             }
             return new JsonObject();
         };
-        return new ObjectType<>(ENDPOINT_MODERATORS, asJsonObject);
+
+        TypeMapper<Moderator> asObject = jsonString -> new Gson().fromJson(asJsonObject.map(jsonString), Moderator.class);
+
+        return new ObjectType<>(ENDPOINT_MODERATORS, asJsonObject, asObject);
     }
 
     @Override
-    public ObjectType<JsonObject> sponsor(String userName) {
+    public ObjectType<Sponsor> sponsor(String userName) {
         TypeMapper<JsonObject> asJsonObject = jsonString -> {
             JsonObject sponsors = new JsonParser().parse(jsonString).getAsJsonObject();
             JsonArray results = sponsors.getAsJsonArray("results");
@@ -76,11 +95,14 @@ public class DefaultUtopianService implements UtopianService {
             }
             return new JsonObject();
         };
-        return new ObjectType<>(ENDPOINT_SPONSORS, asJsonObject);
+
+        TypeMapper<Sponsor> asObject = jsonString -> new Gson().fromJson(asJsonObject.map(jsonString), Sponsor.class);
+
+        return new ObjectType<>(ENDPOINT_SPONSORS, asJsonObject, asObject);
     }
 
     @Override
-    public ArrayType<JsonArray> posts(Map<String, Object> options) {
+    public ArrayType<Post> posts(Map<String, Object> options) {
         if (options == null)
             options = new HashMap<>();
 
@@ -100,11 +122,17 @@ public class DefaultUtopianService implements UtopianService {
             JsonObject postsJson = new JsonParser().parse(jsonString).getAsJsonObject();
             return postsJson.get("results").getAsJsonArray();
         };
-        return new ArrayType<>(url.toString(), asJsonArray);
+
+        TypeMapper<List<Post>> asList = jsonString -> {
+            Type collectionType = new TypeToken<List<Post>>(){}.getType();
+            return new Gson().fromJson(asJsonArray.map(jsonString), collectionType);
+        };
+
+        return new ArrayType<>(url.toString(), asJsonArray, asList);
     }
 
     @Override
-    public ArrayType<JsonArray> topProjects(Map<String, Object> options) {
+    public ArrayType<Project> topProjects(Map<String, Object> options) {
         if (options == null)
             options = new HashMap<>();
 
@@ -114,8 +142,14 @@ public class DefaultUtopianService implements UtopianService {
         }
         url = new StringBuilder(url.substring(0, url.length() - 1));
 
-        TypeMapper<JsonArray> asJsonObject = jsonString -> new JsonParser().parse(jsonString).getAsJsonArray();
-        return new ArrayType<>(url.toString(), asJsonObject);
+        TypeMapper<JsonArray> asJsonArray = jsonString -> new JsonParser().parse(jsonString).getAsJsonArray();
+
+        TypeMapper<List<Project>> asList = jsonString -> {
+            Type collectionType = new TypeToken<List<Project>>(){}.getType();
+            return new Gson().fromJson(jsonString, collectionType);
+        };
+
+        return new ArrayType<>(url.toString(), asJsonArray, asList);
     }
 
     @Override
@@ -129,10 +163,13 @@ public class DefaultUtopianService implements UtopianService {
     }
 
     @Override
-    public ObjectType<JsonObject> post(String userName, String permLink) {
+    public ObjectType<Post> post(String userName, String permLink) {
         String url = ENDPOINT_POSTS + "/" + userName + "/" + permLink;
         TypeMapper<JsonObject> asJsonObject = jsonString -> new JsonParser().parse(jsonString).getAsJsonObject();
-        return new ObjectType<>(url, asJsonObject);
+
+        TypeMapper<Post> asObject = jsonString -> new Gson().fromJson(jsonString, Post.class);
+
+        return new ObjectType<>(url, asJsonObject, asObject);
     }
 
     @Override
@@ -146,7 +183,7 @@ public class DefaultUtopianService implements UtopianService {
     }
 
     @Override
-    public ArrayType<JsonArray> postsByAuthor(String userName, Map<String, Object> options) {
+    public ArrayType<Post> postsByAuthor(String userName, Map<String, Object> options) {
         if (options == null)
             options = new HashMap<>();
 
@@ -169,11 +206,18 @@ public class DefaultUtopianService implements UtopianService {
             JsonObject postsJson = new JsonParser().parse(jsonString).getAsJsonObject();
             return postsJson.get("results").getAsJsonArray();
         };
-        return new ArrayType<>(url.toString(), asJsonArray);
+
+        TypeMapper<List<Post>> asList = jsonString -> {
+            Type collectionType = new TypeToken<List<Post>>(){}.getType();
+            return new Gson().fromJson(asJsonArray.map(jsonString), collectionType);
+        };
+
+
+        return new ArrayType<>(url.toString(), asJsonArray, asList);
     }
 
     @Override
-    public ArrayType<JsonArray> postsByGithubProject(String repoName, Map<String, Object> options) {
+    public ArrayType<Post> postsByGithubProject(String repoName, Map<String, Object> options) {
         String repoId = null;
         try {
             repoId = githubRepoIdByRepoName(repoName).get();

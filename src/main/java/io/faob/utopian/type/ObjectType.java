@@ -10,11 +10,13 @@ import io.faob.utopian.http.HttpManagerImpl;
  * @author FaoB
  */
 public class ObjectType<T> extends Type {
-    private TypeMapper<T> asJsonObject;
+    private TypeMapper<JsonObject> asJsonObject;
+    private TypeMapper<T> asObject;
 
-    public ObjectType(String url, TypeMapper<T> asJsonObject) {
+    public ObjectType(String url, TypeMapper<JsonObject> asJsonObject, TypeMapper<T> asObject) {
         super(url);
         this.asJsonObject = asJsonObject;
+        this.asObject = asObject;
     }
 
     /**
@@ -26,9 +28,20 @@ public class ObjectType<T> extends Type {
      *
      * @return A reference to {@code HttpManager} object to make http call.
      */
-
-    public HttpManager<T> asJsonObject() {
+    public HttpManager<JsonObject> asJsonObject() {
         return new HttpManagerImpl<>(url, asJsonObject);
     }
 
+    /**
+     * Call to this method will map string response to java type and return that type.
+     * <p>
+     * Note: After this method call you need to call {@code get()} or {@code getAsync()}
+     * to make http call and get response.
+     * </p>
+     *
+     * @return A reference to {@code HttpManager} object to make http call.
+     */
+    public HttpManager<T> asJavaType() {
+        return new HttpManagerImpl<>(url, asObject);
+    }
 }
