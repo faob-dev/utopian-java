@@ -24,7 +24,7 @@ public interface UtopianService {
 
 
     /**
-     * Returns all moderators as {@link JsonObject}.
+     * Returns all moderators as {@link JsonArray}.
      * <p>
      * Note: After this method call you need to call {@code get()} to make http call and get response.
      * </p>
@@ -35,7 +35,7 @@ public interface UtopianService {
 
 
     /**
-     * Returns all sponsors as {@link JsonObject}.
+     * Returns all sponsors as {@link JsonArray}.
      * <p>
      * Note: After this method call you need to call {@code get()} to make http call and get response.
      * </p>
@@ -79,7 +79,7 @@ public interface UtopianService {
 
 
     /**
-     * Returns posts as {@link JsonObject} with given filter options.
+     * Returns posts as {@link JsonArray} with given filter options.
      * <p>
      * Note: After this method call you need to call {@code get()} to make http call and get response.
      * </p>
@@ -139,7 +139,7 @@ public interface UtopianService {
 
 
     /**
-     * Returns list of posts as {@link JsonObject} with given author and filter options.
+     * Returns list of posts as {@link JsonArray} with given author and filter options.
      * <p>
      * Note: After this method call you need to call {@code get()} to make http call and get response.
      * </p>
@@ -152,7 +152,7 @@ public interface UtopianService {
 
 
     /**
-     * Returns list of posts as {@link JsonObject} links with specified github repository and filter options.
+     * Returns list of posts as {@link JsonArray} links with specified github repository and filter options.
      * <p>
      * Note: After this method call you need to call {@code get()} to make http call and get response.
      * </p>
