@@ -103,7 +103,7 @@ public class Sponsor {
         this.shouldReceiveRewards = shouldReceiveRewards;
     }
 
-    public boolean isIsWitness() {
+    public boolean isWitness() {
         return isWitness;
     }
 
