@@ -8,25 +8,37 @@ import okhttp3.*;
 import java.io.IOException;
 
 public class HttpManagerImpl<T> implements HttpManager<T> {
-    private String url;
+    private Request request;
     private TypeMapper<T> typeMapper;
     private OkHttpClient okHttpClient = new OkHttpClient();
 
     public HttpManagerImpl(String url, TypeMapper<T> typeMapper) {
-        this.url = url;
         this.typeMapper = typeMapper;
+
+        String apiKey = System.getProperty("x-api-key");
+        if (apiKey == null)
+            apiKey = "";
+
+        String apiKeyId = System.getProperty("x-api-key-id");
+        if (apiKeyId == null)
+            apiKeyId = "";
+
+        this.request = new Request
+                .Builder()
+                .header("x-api-key", apiKey)
+                .header("x-api-key-id", apiKeyId)
+                .url(url)
+                .build();
     }
 
     @Override
     public T get() throws Exception {
-        Request request = new Request.Builder().url(url).build();
         Response response = okHttpClient.newCall(request).execute();
         return typeMapper.map(response.body().string());
     }
 
     @Override
     public void getAsync(ResponseHandler<T> responseHandler, ErrorHandler<Exception> errorHandler) {
-        Request request = new Request.Builder().url(url).build();
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
