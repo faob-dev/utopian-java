@@ -203,6 +203,10 @@ public class Post {
     @Expose
     private List<Beneficiary> beneficiaries = null;
 
+    @SerializedName("deleted")
+    @Expose
+    private boolean deleted;
+
     @SerializedName("active_votes")
     @Expose
     private List<ActiveVote> activeVotes = null;
@@ -599,6 +603,14 @@ public class Post {
         this.beneficiaries = beneficiaries;
     }
 
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
     public List<ActiveVote> getActiveVotes() {
         return activeVotes;
     }
@@ -683,46 +695,6 @@ public class Post {
 
     }
 
-    public class Answer {
-
-        @SerializedName("score")
-        @Expose
-        private int score;
-
-        @SerializedName("selected")
-        @Expose
-        private boolean selected;
-
-        @SerializedName("value")
-        @Expose
-        private String value;
-
-        public int getScore() {
-            return score;
-        }
-
-        public void setScore(int score) {
-            this.score = score;
-        }
-
-        public boolean isSelected() {
-            return selected;
-        }
-
-        public void setSelected(boolean selected) {
-            this.selected = selected;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        public void setValue(String value) {
-            this.value = value;
-        }
-
-    }
-
     public class Beneficiary {
 
         @SerializedName("account")
@@ -753,13 +725,29 @@ public class Post {
 
     public class JsonMetadata {
 
+        @SerializedName("config")
+        @Expose
+        private Config config;
+
+        @SerializedName("staff_pick_by")
+        @Expose
+        private Object staffPickBy;
+
+        @SerializedName("staff_pick")
+        @Expose
+        private Object staffPick;
+
+        @SerializedName("total_influence")
+        @Expose
+        private long totalInfluence;
+
         @SerializedName("score")
         @Expose
-        private int score;
+        private long score;
 
-        @SerializedName("questions")
-        @Expose
-        private List<Question> questions = null;
+        private Questions questions = null;
+
+        private List<Question> questions_ = null;
 
         @SerializedName("moderator")
         @Expose
@@ -809,20 +797,60 @@ public class Post {
         @Expose
         private String community;
 
-        public int getScore() {
+        public Config getConfig() {
+            return config;
+        }
+
+        public void setConfig(Config config) {
+            this.config = config;
+        }
+
+        public Object getStaffPickBy() {
+            return staffPickBy;
+        }
+
+        public void setStaffPickBy(Object staffPickBy) {
+            this.staffPickBy = staffPickBy;
+        }
+
+        public Object getStaffPick() {
+            return staffPick;
+        }
+
+        public void setStaffPick(Object staffPick) {
+            this.staffPick = staffPick;
+        }
+
+        public long getTotalInfluence() {
+            return totalInfluence;
+        }
+
+        public void setTotalInfluence(long totalInfluence) {
+            this.totalInfluence = totalInfluence;
+        }
+
+        public long getScore() {
             return score;
         }
 
-        public void setScore(int score) {
+        public void setScore(long score) {
             this.score = score;
         }
 
-        public List<Question> getQuestions() {
+        public Questions getQuestions() {
             return questions;
         }
 
-        public void setQuestions(List<Question> questions) {
+        public void setQuestions(Questions questions) {
             this.questions = questions;
+        }
+
+        public List<Question> getQuestions_() {
+            return questions_;
+        }
+
+        public void setQuestions_(List<Question> questions_) {
+            this.questions_ = questions_;
         }
 
         public Moderator getModerator() {
@@ -921,202 +949,489 @@ public class Post {
             this.community = community;
         }
 
-    }
+        public class Config {
 
-    public class Moderator {
+            @SerializedName("questions")
+            @Expose
+            private List<Question> questions = null;
 
-        @SerializedName("flagged")
-        @Expose
-        private boolean flagged;
+            public List<Question> getQuestions() {
+                return questions;
+            }
 
-        @SerializedName("pending")
-        @Expose
-        private boolean pending;
+            public void setQuestions(List<Question> questions) {
+                this.questions = questions;
+            }
 
-        @SerializedName("reviewed")
-        @Expose
-        private boolean reviewed;
+            public class Question {
 
-        @SerializedName("time")
-        @Expose
-        private String time;
+                @SerializedName("answers")
+                @Expose
+                private List<Answer> answers = null;
 
-        @SerializedName("account")
-        @Expose
-        private String account;
+                @SerializedName("question_id")
+                @Expose
+                private String questionId;
 
-        public boolean isFlagged() {
-            return flagged;
+                @SerializedName("question")
+                @Expose
+                private String question;
+
+                public List<Answer> getAnswers() {
+                    return answers;
+                }
+
+                public void setAnswers(List<Answer> answers) {
+                    this.answers = answers;
+                }
+
+                public String getQuestionId() {
+                    return questionId;
+                }
+
+                public void setQuestionId(String questionId) {
+                    this.questionId = questionId;
+                }
+
+                public String getQuestion() {
+                    return question;
+                }
+
+                public void setQuestion(String question) {
+                    this.question = question;
+                }
+
+            }
+
+            public class Answer {
+
+                @SerializedName("value")
+                @Expose
+                private double value;
+
+                @SerializedName("answer_id")
+                @Expose
+                private String answerId;
+
+                @SerializedName("answer")
+                @Expose
+                private String answer;
+
+                public double getValue() {
+                    return value;
+                }
+
+                public void setValue(double value) {
+                    this.value = value;
+                }
+
+                public String getAnswerId() {
+                    return answerId;
+                }
+
+                public void setAnswerId(String answerId) {
+                    this.answerId = answerId;
+                }
+
+                public String getAnswer() {
+                    return answer;
+                }
+
+                public void setAnswer(String answer) {
+                    this.answer = answer;
+                }
+
+            }
         }
 
-        public void setFlagged(boolean flagged) {
-            this.flagged = flagged;
+        public class Question {
+
+            @SerializedName("selected")
+            @Expose
+            private long selected;
+
+            @SerializedName("answers")
+            @Expose
+            private List<Answer> answers = null;
+
+            @SerializedName("question")
+            @Expose
+            private String question;
+
+            public long getSelected() {
+                return selected;
+            }
+
+            public void setSelected(long selected) {
+                this.selected = selected;
+            }
+
+            public List<Answer> getAnswers() {
+                return answers;
+            }
+
+            public void setAnswers(List<Answer> answers) {
+                this.answers = answers;
+            }
+
+            public String getQuestion() {
+                return question;
+            }
+
+            public void setQuestion(String question) {
+                this.question = question;
+            }
+
+            public class Answer {
+
+                @SerializedName("score")
+                @Expose
+                private long score;
+
+                @SerializedName("selected")
+                @Expose
+                private boolean selected;
+
+                @SerializedName("value")
+                @Expose
+                private String value;
+
+                public long getScore() {
+                    return score;
+                }
+
+                public void setScore(long score) {
+                    this.score = score;
+                }
+
+                public boolean isSelected() {
+                    return selected;
+                }
+
+                public void setSelected(boolean selected) {
+                    this.selected = selected;
+                }
+
+                public String getValue() {
+                    return value;
+                }
+
+                public void setValue(String value) {
+                    this.value = value;
+                }
+            }
         }
 
-        public boolean isPending() {
-            return pending;
+        public class Questions {
+
+            @SerializedName("most_rated")
+            @Expose
+            private List<MostRated> mostRated = null;
+
+            @SerializedName("total_influence")
+            @Expose
+            private long totalInfluence;
+
+            @SerializedName("answers")
+            @Expose
+            private List<Answer> answers = null;
+
+            @SerializedName("voters")
+            @Expose
+            private List<String> voters = null;
+
+            public List<MostRated> getMostRated() {
+                return mostRated;
+            }
+
+            public void setMostRated(List<MostRated> mostRated) {
+                this.mostRated = mostRated;
+            }
+
+            public long getTotalInfluence() {
+                return totalInfluence;
+            }
+
+            public void setTotalInfluence(long totalInfluence) {
+                this.totalInfluence = totalInfluence;
+            }
+
+            public List<Answer> getAnswers() {
+                return answers;
+            }
+
+            public void setAnswers(List<Answer> answers) {
+                this.answers = answers;
+            }
+
+            public List<String> getVoters() {
+                return voters;
+            }
+
+            public void setVoters(List<String> voters) {
+                this.voters = voters;
+            }
+
+            public class MostRated {
+
+                @SerializedName("voters")
+                @Expose
+                private List<String> voters = null;
+
+                @SerializedName("influence")
+                @Expose
+                private long influence;
+
+                @SerializedName("answer_id")
+                @Expose
+                private String answerId;
+
+                @SerializedName("question_id")
+                @Expose
+                private String questionId;
+
+                public List<String> getVoters() {
+                    return voters;
+                }
+
+                public void setVoters(List<String> voters) {
+                    this.voters = voters;
+                }
+
+                public long getInfluence() {
+                    return influence;
+                }
+
+                public void setInfluence(long influence) {
+                    this.influence = influence;
+                }
+
+                public String getAnswerId() {
+                    return answerId;
+                }
+
+                public void setAnswerId(String answerId) {
+                    this.answerId = answerId;
+                }
+
+                public String getQuestionId() {
+                    return questionId;
+                }
+
+                public void setQuestionId(String questionId) {
+                    this.questionId = questionId;
+                }
+
+            }
+
+            public class Answer {
+
+                @SerializedName("influence")
+                @Expose
+                private long influence;
+
+                @SerializedName("user")
+                @Expose
+                private String user;
+
+                @SerializedName("answer_id")
+                @Expose
+                private String answerId;
+
+                @SerializedName("question_id")
+                @Expose
+                private String questionId;
+
+                public long getInfluence() {
+                    return influence;
+                }
+
+                public void setInfluence(long influence) {
+                    this.influence = influence;
+                }
+
+                public String getUser() {
+                    return user;
+                }
+
+                public void setUser(String user) {
+                    this.user = user;
+                }
+
+                public String getAnswerId() {
+                    return answerId;
+                }
+
+                public void setAnswerId(String answerId) {
+                    this.answerId = answerId;
+                }
+
+                public String getQuestionId() {
+                    return questionId;
+                }
+
+                public void setQuestionId(String questionId) {
+                    this.questionId = questionId;
+                }
+            }
+
         }
 
-        public void setPending(boolean pending) {
-            this.pending = pending;
+        public class Repository {
+
+            @SerializedName("owner")
+            @Expose
+            private Owner owner;
+
+            @SerializedName("fork")
+            @Expose
+            private boolean fork;
+
+            @SerializedName("html_url")
+            @Expose
+            private String htmlUrl;
+
+            @SerializedName("full_name")
+            @Expose
+            private String fullName;
+
+            @SerializedName("name")
+            @Expose
+            private String name;
+
+            @SerializedName("id")
+            @Expose
+            private int id;
+
+            public Owner getOwner() {
+                return owner;
+            }
+
+            public void setOwner(Owner owner) {
+                this.owner = owner;
+            }
+
+            public boolean isFork() {
+                return fork;
+            }
+
+            public void setFork(boolean fork) {
+                this.fork = fork;
+            }
+
+            public String getHtmlUrl() {
+                return htmlUrl;
+            }
+
+            public void setHtmlUrl(String htmlUrl) {
+                this.htmlUrl = htmlUrl;
+            }
+
+            public String getFullName() {
+                return fullName;
+            }
+
+            public void setFullName(String fullName) {
+                this.fullName = fullName;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public int getId() {
+                return id;
+            }
+
+            public void setId(int id) {
+                this.id = id;
+            }
+
+            public class Owner {
+
+                @SerializedName("login")
+                @Expose
+                private String login;
+
+                public String getLogin() {
+                    return login;
+                }
+
+                public void setLogin(String login) {
+                    this.login = login;
+                }
+
+            }
+
         }
 
-        public boolean isReviewed() {
-            return reviewed;
+        public class Moderator {
+
+            @SerializedName("flagged")
+            @Expose
+            private boolean flagged;
+
+            @SerializedName("pending")
+            @Expose
+            private boolean pending;
+
+            @SerializedName("reviewed")
+            @Expose
+            private boolean reviewed;
+
+            @SerializedName("time")
+            @Expose
+            private String time;
+
+            @SerializedName("account")
+            @Expose
+            private String account;
+
+            public boolean isFlagged() {
+                return flagged;
+            }
+
+            public void setFlagged(boolean flagged) {
+                this.flagged = flagged;
+            }
+
+            public boolean isPending() {
+                return pending;
+            }
+
+            public void setPending(boolean pending) {
+                this.pending = pending;
+            }
+
+            public boolean isReviewed() {
+                return reviewed;
+            }
+
+            public void setReviewed(boolean reviewed) {
+                this.reviewed = reviewed;
+            }
+
+            public String getTime() {
+                return time;
+            }
+
+            public void setTime(String time) {
+                this.time = time;
+            }
+
+            public String getAccount() {
+                return account;
+            }
+
+            public void setAccount(String account) {
+                this.account = account;
+            }
+
         }
-
-        public void setReviewed(boolean reviewed) {
-            this.reviewed = reviewed;
-        }
-
-        public String getTime() {
-            return time;
-        }
-
-        public void setTime(String time) {
-            this.time = time;
-        }
-
-        public String getAccount() {
-            return account;
-        }
-
-        public void setAccount(String account) {
-            this.account = account;
-        }
-
-    }
-
-    public class Owner {
-
-        @SerializedName("login")
-        @Expose
-        private String login;
-
-        public String getLogin() {
-            return login;
-        }
-
-        public void setLogin(String login) {
-            this.login = login;
-        }
-
-    }
-
-    public class Question {
-
-        @SerializedName("selected")
-        @Expose
-        private int selected;
-
-        @SerializedName("answers")
-        @Expose
-        private List<Answer> answers = null;
-
-        @SerializedName("question")
-        @Expose
-        private String question;
-
-        public int getSelected() {
-            return selected;
-        }
-
-        public void setSelected(int selected) {
-            this.selected = selected;
-        }
-
-        public List<Answer> getAnswers() {
-            return answers;
-        }
-
-        public void setAnswers(List<Answer> answers) {
-            this.answers = answers;
-        }
-
-        public String getQuestion() {
-            return question;
-        }
-
-        public void setQuestion(String question) {
-            this.question = question;
-        }
-
-    }
-
-    public class Repository {
-
-        @SerializedName("owner")
-        @Expose
-        private Owner owner;
-
-        @SerializedName("fork")
-        @Expose
-        private boolean fork;
-
-        @SerializedName("html_url")
-        @Expose
-        private String htmlUrl;
-
-        @SerializedName("full_name")
-        @Expose
-        private String fullName;
-
-        @SerializedName("name")
-        @Expose
-        private String name;
-
-        @SerializedName("id")
-        @Expose
-        private int id;
-
-        public Owner getOwner() {
-            return owner;
-        }
-
-        public void setOwner(Owner owner) {
-            this.owner = owner;
-        }
-
-        public boolean isFork() {
-            return fork;
-        }
-
-        public void setFork(boolean fork) {
-            this.fork = fork;
-        }
-
-        public String getHtmlUrl() {
-            return htmlUrl;
-        }
-
-        public void setHtmlUrl(String htmlUrl) {
-            this.htmlUrl = htmlUrl;
-        }
-
-        public String getFullName() {
-            return fullName;
-        }
-
-        public void setFullName(String fullName) {
-            this.fullName = fullName;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
     }
 
 }

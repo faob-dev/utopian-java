@@ -15,11 +15,11 @@ public class HttpManagerImpl<T> implements HttpManager<T> {
     public HttpManagerImpl(String url, TypeMapper<T> typeMapper) {
         this.typeMapper = typeMapper;
 
-        String apiKey = System.getProperty("x-api-key");
+        String apiKey = System.getProperty("API_KEY");
         if (apiKey == null)
             apiKey = "";
 
-        String apiKeyId = System.getProperty("x-api-key-id");
+        String apiKeyId = System.getProperty("API_KEY_ID");
         if (apiKeyId == null)
             apiKeyId = "";
 
@@ -27,6 +27,7 @@ public class HttpManagerImpl<T> implements HttpManager<T> {
                 .Builder()
                 .header("x-api-key", apiKey)
                 .header("x-api-key-id", apiKeyId)
+                .header("Content-Type", "application/json")
                 .url(url)
                 .build();
     }
