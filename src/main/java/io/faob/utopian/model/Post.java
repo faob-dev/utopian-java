@@ -837,19 +837,19 @@ public class Post {
             this.score = score;
         }
 
-        public Questions getQuestions() {
+        public Questions getQuestionsObject() {
             return questions;
         }
 
-        public void setQuestions(Questions questions) {
+        public void setQuestionsObject(Questions questions) {
             this.questions = questions;
         }
 
-        public List<Question> getQuestions_() {
+        public List<Question> getQuestionsArray() {
             return questions_;
         }
 
-        public void setQuestions_(List<Question> questions_) {
+        public void setQuestionsArray(List<Question> questions_) {
             this.questions_ = questions_;
         }
 

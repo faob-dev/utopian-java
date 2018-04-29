@@ -124,8 +124,12 @@ public class DefaultUtopianService implements UtopianService {
         };
 
         TypeMapper<List<Post>> asList = jsonString -> {
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(Post.class, new PostDeserializer())
+                    .create();
+
             Type collectionType = new TypeToken<List<Post>>(){}.getType();
-            return new Gson().fromJson(asJsonArray.map(jsonString), collectionType);
+            return gson.fromJson(asJsonArray.map(jsonString), collectionType);
         };
 
         return new ArrayType<>(url.toString(), asJsonArray, asList);
@@ -167,7 +171,11 @@ public class DefaultUtopianService implements UtopianService {
         String url = ENDPOINT_POSTS + "/" + userName + "/" + permLink;
         TypeMapper<JsonObject> asJsonObject = jsonString -> new JsonParser().parse(jsonString).getAsJsonObject();
 
-        TypeMapper<Post> asObject = jsonString -> new Gson().fromJson(jsonString, Post.class);
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Post.class, new PostDeserializer())
+                .create();
+
+        TypeMapper<Post> asObject = jsonString -> gson.fromJson(jsonString, Post.class);
 
         return new ObjectType<>(url, asJsonObject, asObject);
     }
@@ -238,4 +246,32 @@ public class DefaultUtopianService implements UtopianService {
         return new HttpManagerImpl<>(url, asString);
     }
 
+    private class PostDeserializer implements JsonDeserializer<Post> {
+
+        @Override
+        public Post deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            Gson gson = new GsonBuilder()
+                    .excludeFieldsWithoutExposeAnnotation()
+                    .create();
+
+            Post post = gson.fromJson(json, Post.class);
+            JsonObject jsonObject = json.getAsJsonObject().get("json_metadata").getAsJsonObject();
+
+            if (jsonObject.has("questions")) {
+                JsonElement elem = jsonObject.get("questions");
+                if (elem != null && !elem.isJsonNull()) {
+                    if (elem.isJsonObject()) {
+                        Post.JsonMetadata.Questions questions = new Gson().fromJson(elem, Post.JsonMetadata.Questions.class);
+                        post.getJsonMetadata().setQuestionsObject(questions);
+                    } else if (elem.isJsonArray()) {
+                        Type collectionType = new TypeToken<List<Post.JsonMetadata.Question>>() {}.getType();
+                        List<Post.JsonMetadata.Question> questions = new Gson().fromJson(elem, collectionType);
+                        post.getJsonMetadata().setQuestionsArray(questions);
+                    }
+                }
+            }
+
+            return post;
+        }
+    }
 }
