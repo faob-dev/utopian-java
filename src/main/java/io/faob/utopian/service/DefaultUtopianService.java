@@ -196,24 +196,7 @@ public class DefaultUtopianService implements UtopianService {
         options.put("section", "author");
         options.put("author", userName);
 
-        StringBuilder url = new StringBuilder(ENDPOINT_POSTS + "/?");
-        for (Map.Entry<String, Object> entry : options.entrySet()) {
-            url.append(entry.getKey()).append("=").append(entry.getValue()).append("&");
-        }
-        url = new StringBuilder(url.substring(0, url.length() - 1));
-
-        TypeMapper<JsonArray> asJsonArray = jsonString -> {
-            JsonObject postsJson = new JsonParser().parse(jsonString).getAsJsonObject();
-            return postsJson.get("results").getAsJsonArray();
-        };
-
-        TypeMapper<List<Post>> asList = jsonString -> {
-            Type collectionType = new TypeToken<List<Post>>(){}.getType();
-            return new Gson().fromJson(asJsonArray.map(jsonString), collectionType);
-        };
-
-
-        return new ArrayType<>(url.toString(), asJsonArray, asList);
+        return posts(options);
     }
 
     @Override
