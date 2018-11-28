@@ -37,4 +37,3 @@ For complete tutorials please read [wiki](https://github.com/faob-dev/utopian.ja
 # Author #
 
 FaoB  
-https://busy.org/@kabooom
